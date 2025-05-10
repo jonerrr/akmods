@@ -31,13 +31,10 @@ repo_gpgcheck=1
 gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 EOF
 
+export PATH="/usr/sbin:/sbin:/usr/bin:/bin:${PATH}"
+echo "Current PATH before DNF: ${PATH}" # Add this line
+
 dnf install -y \
-    coreutils \
-    grep \
-    gawk \
-    findutils \
-    util-linux \
-    which \
     intel-oneapi-vtune \
     rpm-build \
     make \
@@ -69,7 +66,7 @@ if [ ! -d "${KERNEL_SRC_DIR}" ]; then
     exit 1
 fi
 echo "Building VTune drivers from ${PWD} for kernel ${KERNEL_VERSION} using sources at ${KERNEL_SRC_DIR}"
-./build-driver -ni -pu --kernel-version "${KERNEL_VERSION}" --kernel-src-dir "${KERNEL_SRC_DIR}"
+./build-driver -ni --kernel-version="${KERNEL_VERSION}" --kernel-src-dir="${KERNEL_SRC_DIR}"
 
 # Build the RPM package using the provided spec file
 RPMBUILD_TOPDIR="${PWD}/rpmbuild_temp"
