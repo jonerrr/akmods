@@ -34,7 +34,19 @@ EOF
 export PATH="/usr/sbin:/sbin:/usr/bin:/bin:${PATH}"
 echo "Current PATH before DNF: ${PATH}" # Add this line
 
+# dnf install -y \
+#     intel-oneapi-vtune \
+#     rpm-build \
+#     make \
+#     gcc
 dnf install -y \
+    coreutils \
+    grep \
+    sed \
+    gawk \
+    findutils \
+    which \
+    util-linux \
     intel-oneapi-vtune \
     rpm-build \
     make \
