@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**.md'
-  schedule:
-    - cron: '25 0 * * *'  # 0025 UTC everyday (20 minutes after 42)
+      - "**.md"
+  # schedule:
+  #   - cron: "25 0 * * *" # 0025 UTC everyday (20 minutes after 42)
   workflow_dispatch:
 
 jobs:
@@ -21,8 +21,8 @@ jobs:
           - 41
         kernel_flavor:
           - main
-          - coreos-stable
-          - coreos-testing
+          # - coreos-stable
+          # - coreos-testing
     with:
       fedora_version: ${{ matrix.fedora_version }}
       kernel_flavor: ${{ matrix.kernel_flavor }}
