@@ -154,19 +154,19 @@ jobs:
         kernel_flavor: # this must be in matrix for excludes, but reference inputs.kernel_flavor in workflow
           - ${{ inputs.kernel_flavor }}
         cfile_suffix:
-          - common
+          # - common
           - extra
-          - nvidia
-          - nvidia-open
-          - zfs
+          # - nvidia
+          # - nvidia-open
+          # - zfs
         exclude:
           # extra
-          - kernel_flavor: main
-            cfile_suffix: extra
-          - kernel_flavor: coreos-stable
-            cfile_suffix: extra
-          - kernel_flavor: coreos-testing
-            cfile_suffix: extra
+          # - kernel_flavor: main
+          #   cfile_suffix: extra
+          # - kernel_flavor: coreos-stable
+          #   cfile_suffix: extra
+          # - kernel_flavor: coreos-testing
+          #   cfile_suffix: extra
           # zfs
           - kernel_flavor: main
             cfile_suffix: zfs
