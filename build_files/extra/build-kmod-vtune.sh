@@ -89,6 +89,11 @@ if [ ! -f "sepdk.spec" ]; then
     echo "Error: sepdk.spec not found in ${PWD}"
     exit 1
 fi
+
+echo "Debug: Contents of sepdk.spec:"
+cat sepdk.spec
+echo "--- End of sepdk.spec ---"
+
 cp sepdk.spec "${RPMBUILD_TOPDIR}/SPECS/"
 
 # The build-driver script should have placed the .ko files where sepdk.spec expects them.
