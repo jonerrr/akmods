@@ -32,26 +32,26 @@ Builds also run for different kernels:
 
 This table shows what groups build for which kernel and Fedora release:
 
-| Build | Kernel | akmods group |
-|-------|--------|--------------|
-| bazzite | bazzite | common |
-| bazzite | bazzite | extra |
-| bazzite | bazzite | nvidia |
-| bazzite | bazzite | nvidia-open |
-| 41 | main | common |
-| 41 | main | nvidia |
-| 41 | main | nvidia-open |
-| 41 | coreos-stable | common |
-| 41 | coreos-stable | nvidia |
-| 41 | coreos-stable | nvidia-open |
-| 41 | coreos-stable | zfs |
-| 42 | main | common |
-| 42 | main | nvidia |
-| 42 | main | nvidia-open |
-| 42 | coreos-stable | common |
-| 42 | coreos-stable | nvidia |
-| 42 | coreos-stable | nvidia-open |
-| 42 | coreos-stable | zfs |
+| Build   | Kernel        | akmods group |
+| ------- | ------------- | ------------ |
+| bazzite | bazzite       | common       |
+| bazzite | bazzite       | extra        |
+| bazzite | bazzite       | nvidia       |
+| bazzite | bazzite       | nvidia-open  |
+| 41      | main          | common       |
+| 41      | main          | nvidia       |
+| 41      | main          | nvidia-open  |
+| 41      | coreos-stable | common       |
+| 41      | coreos-stable | nvidia       |
+| 41      | coreos-stable | nvidia-open  |
+| 41      | coreos-stable | zfs          |
+| 42      | main          | common       |
+| 42      | main          | nvidia       |
+| 42      | main          | nvidia-open  |
+| 42      | coreos-stable | common       |
+| 42      | coreos-stable | nvidia       |
+| 42      | coreos-stable | nvidia-open  |
+| 42      | coreos-stable | zfs          |
 
 ## Features
 
@@ -71,29 +71,30 @@ The `nvidia` and `nvidia-open` images contains
 
 ### Kmod Packages
 
-| Group | Package | Description | Source |
-|-------|---------|-------------|--------|
-| common | [framework-laptop](https://github.com/DHowett/framework-laptop-kmod) | A kernel module that exposes the Framework Laptop (13, 16)'s battery charge limit and LEDs to userspace | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod) |
-| common | [kvmfr](https://github.com/gnif/looking-glass) | KVM framebuffer relay kernel module for use with Looking Glass | [![badge](https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/package/kvmfr-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/package/kvmfr-kmod) |
-| common | [openrazer](https://openrazer.github.io/) | kernel module adding additional features to Razer hardware | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod) |
-| common | [v4l2loopback](https://github.com/umlaeute/v4l2loopback) | allows creating "virtual video devices" | [RPMFusion - free](https://rpmfusion.org/) |
-| common | [wl](https://github.com/rpmfusion/broadcom-wl/) | support for some legacy broadcom wifi devices | [RPMFusion - nonfree](https://rpmfusion.org/) |
-| common | [xpadneo](https://github.com/atar-axis/xpadneo) | xbox one controller bluetooth driver | [negativo17 - fedora-multimedia](https://negativo17.org/) |
-| common | [xone](https://github.com/BoukeHaarsma23/xonedo/) | xbox one controller USB wired/RF driver modified to work along-side xpad | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod) |
-| extra | [ayaneo-platform](https://github.com/ShadowBlip/ayaneo-platform) | Linux drivers for AYANEO x86 handhelds | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayaneo-platform-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayaneo-platform-kmod) |
-| extra | [ayn-platform](https://github.com/ShadowBlip/ayn-platform) | Linux drivers for AYN x86 handhelds | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayn-platform-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayn-platform-kmod) |
-| extra | [bmi260](https://github.com/hhd-dev/bmi260) | kernel module driver for the Bosch BMI260 IMU | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/bmi260-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/bmi260-kmod) |
-| extra | [evdi](www.displaylink.com) | kernel module required for use of displaylink | [negativo17 - fedora-multimedia](https://negativo17.org/) |
-| extra | [gcadapter_oc](https://github.com/hannesmann/gcadapter-oc-kmod) | kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gcadapter_oc-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gcadapter_oc-kmod) |
-| extra | [gpd-fan](https://github.com/KyleGospo/gpd-fan-driver) | kernel module to control fan speeds on GPD handhelds | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gpd-fan-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gpd-fan-kmod) |
-| extra | [nct6687d](https://github.com/Fred78290/nct6687d) | Linux kernel module for Nuvoton NCT6687-R found on AMD B550 chipset motherboards | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/nct6687d-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/nct6687d-kmod) |
-| extra | [ryzen-smu](https://gitlab.com/leogx9r/ryzen_smu) | A Linux kernel driver that exposes access to the SMU (System Management Unit) for certain AMD Ryzen Processors | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ryzen-smu-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ryzen-smu-kmod) |
-| extra | [system76](https://github.com/pop-os/system76-dkms) | A Linux kernel driver for System76 laptops | [![badge](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-driver-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-driver-kmod/) |
-| extra | [system76-io](https://github.com/pop-os/system76-io-dkms) | A Linux kernel driver for the System76 Io board, which is used in System76's Thelio desktop line | [![badge](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-io-akmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-io-akmod/) |
-| extra | [zenergy](https://github.com/BoukeHaarsma23/zenergy) | Based on AMD_ENERGY driver, but with some jiffies added so non-root users can read it safely | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/zenergy-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/zenergy-kmod) |
-| nvidia | [nvidia](https://negativo17.org/nvidia-driver/) | nvidia GPU drivers | [negativo17 - fedora-nvidia](https://negativo17.org/) |
-| nvidia-open | [nvidia](https://negativo17.org/nvidia-driver/) | nvidia-open GPU drivers | [negativo17 - fedora-nvidia](https://negativo17.org/) |
-| zfs | [zfs](https://github.com/openzfs/zfs) | OpenZFS advanced file system and volume manager (From  Ucore, CoreOS Only) |
+| Group       | Package                                                                                     | Description                                                                                                    | Source                                                                                                                                                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| common      | [framework-laptop](https://github.com/DHowett/framework-laptop-kmod)                        | A kernel module that exposes the Framework Laptop (13, 16)'s battery charge limit and LEDs to userspace        | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod)             |
+| common      | [kvmfr](https://github.com/gnif/looking-glass)                                              | KVM framebuffer relay kernel module for use with Looking Glass                                                 | [![badge](https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/package/kvmfr-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/package/kvmfr-kmod) |
+| common      | [openrazer](https://openrazer.github.io/)                                                   | kernel module adding additional features to Razer hardware                                                     | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod)                           |
+| common      | [v4l2loopback](https://github.com/umlaeute/v4l2loopback)                                    | allows creating "virtual video devices"                                                                        | [RPMFusion - free](https://rpmfusion.org/)                                                                                                                                                                                       |
+| common      | [wl](https://github.com/rpmfusion/broadcom-wl/)                                             | support for some legacy broadcom wifi devices                                                                  | [RPMFusion - nonfree](https://rpmfusion.org/)                                                                                                                                                                                    |
+| common      | [xpadneo](https://github.com/atar-axis/xpadneo)                                             | xbox one controller bluetooth driver                                                                           | [negativo17 - fedora-multimedia](https://negativo17.org/)                                                                                                                                                                        |
+| common      | [xone](https://github.com/BoukeHaarsma23/xonedo/)                                           | xbox one controller USB wired/RF driver modified to work along-side xpad                                       | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod)                                     |
+| extra       | [ayaneo-platform](https://github.com/ShadowBlip/ayaneo-platform)                            | Linux drivers for AYANEO x86 handhelds                                                                         | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayaneo-platform-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayaneo-platform-kmod)               |
+| extra       | [ayn-platform](https://github.com/ShadowBlip/ayn-platform)                                  | Linux drivers for AYN x86 handhelds                                                                            | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayn-platform-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ayn-platform-kmod)                     |
+| extra       | [bmi260](https://github.com/hhd-dev/bmi260)                                                 | kernel module driver for the Bosch BMI260 IMU                                                                  | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/bmi260-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/bmi260-kmod)                                 |
+| extra       | [evdi](www.displaylink.com)                                                                 | kernel module required for use of displaylink                                                                  | [negativo17 - fedora-multimedia](https://negativo17.org/)                                                                                                                                                                        |
+| extra       | [gcadapter_oc](https://github.com/hannesmann/gcadapter-oc-kmod)                             | kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter                                    | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gcadapter_oc-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gcadapter_oc-kmod)                     |
+| extra       | [gpd-fan](https://github.com/KyleGospo/gpd-fan-driver)                                      | kernel module to control fan speeds on GPD handhelds                                                           | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gpd-fan-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/gpd-fan-kmod)                               |
+| extra       | [nct6687d](https://github.com/Fred78290/nct6687d)                                           | Linux kernel module for Nuvoton NCT6687-R found on AMD B550 chipset motherboards                               | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/nct6687d-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/nct6687d-kmod)                             |
+| extra       | [ryzen-smu](https://gitlab.com/leogx9r/ryzen_smu)                                           | A Linux kernel driver that exposes access to the SMU (System Management Unit) for certain AMD Ryzen Processors | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ryzen-smu-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/ryzen-smu-kmod)                           |
+| extra       | [system76](https://github.com/pop-os/system76-dkms)                                         | A Linux kernel driver for System76 laptops                                                                     | [![badge](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-driver-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-driver-kmod/)    |
+| extra       | [system76-io](https://github.com/pop-os/system76-io-dkms)                                   | A Linux kernel driver for the System76 Io board, which is used in System76's Thelio desktop line               | [![badge](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-io-akmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ssweeny/system76-hwe/package/system76-io-akmod/)          |
+| extra       | [vtune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Intel VTune Profiler kernel modules for performance analysis                                                   | Intel oneAPI Repositories                                                                                                                                                                                                        |
+| extra       | [zenergy](https://github.com/BoukeHaarsma23/zenergy)                                        | Based on AMD_ENERGY driver, but with some jiffies added so non-root users can read it safely                   | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/zenergy-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/zenergy-kmod)                               |
+| nvidia      | [nvidia](https://negativo17.org/nvidia-driver/)                                             | nvidia GPU drivers                                                                                             | [negativo17 - fedora-nvidia](https://negativo17.org/)                                                                                                                                                                            |
+| nvidia-open | [nvidia](https://negativo17.org/nvidia-driver/)                                             | nvidia-open GPU drivers                                                                                        | [negativo17 - fedora-nvidia](https://negativo17.org/)                                                                                                                                                                            |
+| zfs         | [zfs](https://github.com/openzfs/zfs)                                                       | OpenZFS advanced file system and volume manager (From Ucore, CoreOS Only)                                      |
 
 ## Notes
 
@@ -115,7 +116,6 @@ We build both the open and closed drivers from NVIDIA. The open driver is the on
 - NVIDIA Volta: V100
 - NVIDIA Pascal: Quadro: P2000, P4000, P5000, P6000, GP100; Tesla: P100, P40, P4
 - NVIDIA Maxwell: Quadro: K2200, M2000, M4000, M5000, M6000, M6000 24GB; - - Tesla: M60, M40, M6, M4
-
 
 ## Usage
 
