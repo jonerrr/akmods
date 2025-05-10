@@ -10,7 +10,7 @@ FROM ${BUILDER_BASE} AS builder
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 ARG KERNEL_FLAVOR="${KERNEL_FLAVOR:-main}"
 ARG RPMFUSION_MIRROR=""
-ARG DUAL_SIGN="true"
+ARG DUAL_SIGN="false"
 
 COPY build_files/extra build_files/shared /tmp/
 COPY certs /tmp/certs

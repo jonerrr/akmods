@@ -9,7 +9,7 @@ FROM ${BUILDER_BASE} AS builder
 
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 ARG KERNEL_FLAVOR="${KERNEL_FLAVOR:-coreos-stable}"
-ARG DUAL_SIGN="true"
+ARG DUAL_SIGN="false"
 ARG RPMFUSION_MIRROR=""
 ARG ZFS_MINOR_VERSION="${ZFS_MINOR_VERSION:-2.3}"
 
@@ -21,9 +21,9 @@ RUN --mount=type=bind,src=kernel_cache,dst=/tmp/kernel_cache,ro \
     --mount=type=cache,dst=/var/cache/dnf \
     ls -sh /tmp/kernel_cache; \
     if grep -qv "surface" <<< "${KERNEL_FLAVOR}"; then \
-        export KERNEL_NAME="kernel" \
+    export KERNEL_NAME="kernel" \
     ; else \
-        export KERNEL_NAME="kernel-surface" \
+    export KERNEL_NAME="kernel-surface" \
     ; fi && \
     /tmp/build-prep.sh && \
     /tmp/build-kmod-zfs.sh && \

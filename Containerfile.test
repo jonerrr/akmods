@@ -14,7 +14,7 @@ FROM ${BUILDER_BASE} AS tester
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 ARG KERNEL_FLAVOR="${KERNEL_FLAVOR:-main}"
 ARG RPMFUSION_MIRROR=""
-ARG DUAL_SIGN="true"
+ARG DUAL_SIGN="false"
 
 COPY build_files/shared /tmp/
 COPY certs /tmp/certs
@@ -25,9 +25,9 @@ COPY --from=akmods_cache /rpms /tmp/akmods-rpms
 
 RUN --mount=type=cache,dst=/var/cache/dnf \
     if grep -qv "surface" <<< "${KERNEL_FLAVOR}"; then \
-        export KERNEL_NAME="kernel" \
+    export KERNEL_NAME="kernel" \
     ; else \
-        export KERNEL_NAME="kernel-surface" \
+    export KERNEL_NAME="kernel-surface" \
     ; fi && \
     /tmp/test-prep.sh
 

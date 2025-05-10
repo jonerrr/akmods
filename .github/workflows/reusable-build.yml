@@ -91,7 +91,7 @@ jobs:
             --env KERNEL_BUILD_TAG=${{ steps.kernel-version.outputs.kernel_build_tag }} \
             --env KERNEL_VERSION=${{ steps.kernel-version.outputs.kernel_release }} \
             --env KERNEL_FLAVOR=${{ inputs.kernel_flavor }} \
-            --env DUAL_SIGN=true \
+            --env DUAL_SIGN=false \
             --name "$container_name" \
             -v ${{ env.KCWD }}:${{ env.KCWD }}:rw \
             -dt "$build_image"
@@ -151,7 +151,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kernel_flavor:  # this must be in matrix for excludes, but reference inputs.kernel_flavor in workflow
+        kernel_flavor: # this must be in matrix for excludes, but reference inputs.kernel_flavor in workflow
           - ${{ inputs.kernel_flavor }}
         cfile_suffix:
           - common
@@ -322,7 +322,7 @@ jobs:
             KERNEL_FLAVOR=${{ inputs.kernel_flavor }}
             FEDORA_MAJOR_VERSION=${{ inputs.fedora_version }}
             RPMFUSION_MIRROR=${{ vars.RPMFUSION_MIRROR }}
-            DUAL_SIGN=true
+            DUAL_SIGN=false
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
@@ -340,7 +340,7 @@ jobs:
             RPMFUSION_MIRROR=${{ vars.RPMFUSION_MIRROR }}
             INPUT_AKMODS=${{ env.IMAGE_NAME }}
             INPUT_TAG=${{ env.default_tag }}
-            DUAL_SIGN=true
+            DUAL_SIGN=false
           oci: false
 
       - name: Test Akmods Signature
