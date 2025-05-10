@@ -32,6 +32,12 @@ gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.
 EOF
 
 dnf install -y \
+    coreutils \
+    grep \
+    gawk \
+    findutils \
+    util-linux \
+    which \
     intel-oneapi-vtune \
     rpm-build \
     make \
