@@ -31,12 +31,8 @@ repo_gpgcheck=1
 gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 EOF
 
-# Install Intel VTune Profiler, rpm-build for packaging, and kernel headers.
-# kernel-devel matching KERNEL_VERSION is crucial. build-prep.sh should handle this,
-# but explicitly listing kernel-devel for the specific KERNEL_NAME ensures it.
 dnf install -y \
     intel-oneapi-vtune \
-    "kernel-devel-${KERNEL_NAME}" \
     rpm-build \
     make \
     gcc
