@@ -47,8 +47,7 @@ dnf install -y \
     make \
     gcc
 
-echo "sepdk src dir ls: $(ls /opt/intel/oneapi/vtune/latest/sepdk/src/)"
-# ls /opt/intel/oneapi/vtune/latest/sepdk/src/
+# echo "sepdk src dir ls: $(ls /opt/intel/oneapi/vtune/latest/sepdk/src/)"
 cd "${SEPDK_SRC_DIR}"
 
 # Build the driver modules
@@ -72,20 +71,24 @@ if [ ! -f "sepdk.spec" ]; then
     exit 1
 fi
 
-# Modify sepdk.spec to work with pre-built .ko files instead of a source tarball
-# 1. Comment out Source0 line
-# 2. Comment out %setup -q line in %prep
-# 3. Ensure %prep section still exists even if empty, or rpmbuild might complain.
-#    Alternatively, remove %prep entirely if it becomes empty.
-#    Let's try making %prep effectively a no-op.
+# Modify sepdk.spec
 echo "Modifying sepdk.spec to handle pre-built .ko files..."
 cp sepdk.spec sepdk.spec.orig # Backup original
+# 1. Comment out Source0
 sed -i 's|^Source0:.*|# Source0: (Commented out by build-kmod-vtune.sh)|' sepdk.spec
-# If %prep only contains %setup, we can comment out %setup and leave %prep.
-# If %prep has other commands, only comment %setup.
-# Assuming %prep only has %setup based on typical usage:
-sed -i '/%prep/a # %setup -q (Commented out by build-kmod-vtune.sh)' sepdk.spec        # Add comment after %prep
-sed -i 's|^%setup -q.*|# %setup -q (Commented out by build-kmod-vtune.sh)|' sepdk.spec # Comment the line itself
+# 2. Comment out %setup -q in %prep
+sed -i '/%prep/a # %setup -q (Commented out by build-kmod-vtune.sh)' sepdk.spec
+sed -i 's|^%setup -q.*|# %setup -q (Commented out by build-kmod-vtune.sh)|' sepdk.spec
+
+# 3. Prepend %{SEPDK_SRC_DIR_ABS} to source paths in %install's cp commands
+#    This handles files directly in SEPDK_SRC_DIR and in its subdirectories (pax/, socperf/src/, etc.)
+#    Match 'cp ' followed by something that doesn't start with '/' (to avoid system paths)
+#    and capture the source file/path.
+#    The spec uses relative paths like "pax/pax-...ko", "insmod-sep", etc.
+#    We need to be careful not to prepend to the destination path.
+#    Example: cp foo %{buildroot}/bar -> cp %{SEPDK_SRC_DIR_ABS}/foo %{buildroot}/bar
+#    Example: cp pax/foo %{buildroot}/bar -> cp %{SEPDK_SRC_DIR_ABS}/pax/foo %{buildroot}/bar
+sed -i -E 's|^(cp )([^[:space:]/%][^[:space:]]*)( .*)|\\1%{SEPDK_SRC_DIR_ABS}/\\2\\3|' sepdk.spec
 
 echo "Debug: Contents of modified sepdk.spec:"
 cat sepdk.spec
@@ -94,7 +97,6 @@ echo "--- End of modified sepdk.spec ---"
 cp sepdk.spec "${RPMBUILD_TOPDIR}/SPECS/"
 
 # The build-driver script should have placed the .ko files where sepdk.spec expects them.
-# Typically, the spec file will copy them from the build location during its %install phase.
 echo "Building VTune kmod RPM using sepdk.spec for kernel ${KERNEL_VERSION}"
 
 VTUNE_PRODUCT_VERSION=$(rpm -q --qf '%{VERSION}' intel-oneapi-vtune 2>/dev/null || echo "0.0.0")
@@ -109,6 +111,9 @@ if ! uname -v | grep -q SMP; then
 fi
 echo "Info: Determined ARITY as '${ARITY}'"
 
+# Define SEPDK_SRC_DIR_ABS for use inside the spec file. PWD is SEPDK_SRC_DIR.
+SEPDK_SRC_DIR_ABS="${PWD}"
+
 rpmbuild -bb "${RPMBUILD_TOPDIR}/SPECS/sepdk.spec" \
     --define "_topdir ${RPMBUILD_TOPDIR}" \
     --define "kversion ${KERNEL_VERSION}" \
@@ -120,7 +125,8 @@ rpmbuild -bb "${RPMBUILD_TOPDIR}/SPECS/sepdk.spec" \
     --define "ARCH ${ARCH}" \
     --define "ARITY ${ARITY}" \
     --define "IS_VTUNE_BUILD 1" \
-    --define "DRIVER_GROUP vtune"
+    --define "DRIVER_GROUP vtune" \
+    --define "SEPDK_SRC_DIR_ABS ${SEPDK_SRC_DIR_ABS}"
 
 # Determine the kmod RPM path.
 # The spec file defines: %define _rpmfilename %{NAME}-%{VERS}-%{release}.%{ARCH}.rpm
