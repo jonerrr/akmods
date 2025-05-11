@@ -99,37 +99,51 @@ cp sepdk.spec "${RPMBUILD_TOPDIR}/SPECS/"
 # The build-driver script should have placed the .ko files where sepdk.spec expects them.
 # Typically, the spec file will copy them from the build location during its %install phase.
 echo "Building VTune kmod RPM using sepdk.spec for kernel ${KERNEL_VERSION}"
+
+VTUNE_PRODUCT_VERSION=$(rpm -q --qf '%{VERSION}' intel-oneapi-vtune 2>/dev/null || echo "0.0.0")
+KMOD_BASE_NAME="sep5" # Based on DRIVER_NAME=sep5 in insmod-sep
+KMOD_VERSION="${VTUNE_PRODUCT_VERSION}"
+KMOD_BUILD_RELEASE="1.fc${RELEASE}.${KERNEL_FLAVOR:-main}"
+
+# Determine ARITY (smp or up)
+ARITY="smp" # Default to smp for modern systems
+if ! uname -v | grep -q SMP; then
+    ARITY="up"
+fi
+echo "Info: Determined ARITY as '${ARITY}'"
+
 rpmbuild -bb "${RPMBUILD_TOPDIR}/SPECS/sepdk.spec" \
     --define "_topdir ${RPMBUILD_TOPDIR}" \
     --define "kversion ${KERNEL_VERSION}" \
-    --define "kflav ${KERNEL_FLAVOR:-main}" # KERNEL_FLAVOR should be an ARG/ENV
+    --define "kflav ${KERNEL_FLAVOR:-main}" \
+    --define "NAME ${KMOD_BASE_NAME}" \
+    --define "VERS ${KMOD_VERSION}" \
+    --define "BUILD_RELEASE ${KMOD_BUILD_RELEASE}" \
+    --define "SEP_DRIVER_NAME ${KMOD_BASE_NAME}" \
+    --define "ARCH ${ARCH}" \
+    --define "ARITY ${ARITY}" \
+    --define "IS_VTUNE_BUILD 1" \
+    --define "DRIVER_GROUP vtune"
 
-# Determine the kmod name (e.g., "sep" or "vtune") from the spec or RPM filename.
-# This is a guess; the actual name depends on sepdk.spec.
-# Common pattern is kmod-<name>-<kernel_version>.<arch>.rpm
-# We'll try to find any kmod RPM for the current kernel.
-KMOD_RPM_PATH=$(find "${RPMBUILD_TOPDIR}/RPMS/${ARCH}/" -name "kmod-*-${KERNEL_VERSION}.${ARCH}.rpm" -print -quit)
+# Determine the kmod RPM path.
+# The spec file defines: %define _rpmfilename %{NAME}-%{VERS}-%{release}.%{ARCH}.rpm
+# So, the RPM name will be like sep5-2025.3.0-1.fc42.main.x86_64.rpm
+EXPECTED_RPM_NAME="${KMOD_BASE_NAME}-${KMOD_VERSION}-${KMOD_BUILD_RELEASE}.${ARCH}.rpm"
+KMOD_RPM_PATH=$(find "${RPMBUILD_TOPDIR}/RPMS/${ARCH}/" -name "${EXPECTED_RPM_NAME}" -print -quit)
 
 if [ -z "${KMOD_RPM_PATH}" ]; then
-    echo "Error: VTune kmod RPM not found after build in ${RPMBUILD_TOPDIR}/RPMS/${ARCH}/ for kernel ${KERNEL_VERSION}"
+    echo "Error: VTune kmod RPM '${EXPECTED_RPM_NAME}' not found after build in ${RPMBUILD_TOPDIR}/RPMS/${ARCH}/"
     echo "Listing contents of ${RPMBUILD_TOPDIR}/RPMS/${ARCH}/:"
     ls -la "${RPMBUILD_TOPDIR}/RPMS/${ARCH}/" || echo " (failed to list)"
-    # Consider printing rpmbuild logs if they are captured to a file.
     exit 1
 fi
 
 echo "VTune kmod RPM built successfully: ${KMOD_RPM_PATH}"
 
-# Determine the kmod name from the RPM filename (e.g., "sep" from "kmod-sep-...")
-KMOD_NAME_FROM_RPM=$(basename "${KMOD_RPM_PATH}" | sed -n "s/^kmod-\([a-zA-Z0-9_-]*\)-${KERNEL_VERSION}\.${ARCH}\.rpm$/\1/p")
-if [ -z "${KMOD_NAME_FROM_RPM}" ]; then
-    echo "Warning: Could not reliably determine kmod name from RPM filename: $(basename "${KMOD_RPM_PATH}")"
-    echo "Defaulting to 'vtune' for destination directory. Verify this is correct for dual-sign.sh."
-    KMOD_NAME_FOR_DIR="vtune"
-else
-    echo "Info: Determined kmod name as '${KMOD_NAME_FROM_RPM}' from RPM."
-    KMOD_NAME_FOR_DIR="${KMOD_NAME_FROM_RPM}"
-fi
+# The KMOD_NAME_FOR_DIR will be the base name of the RPM (e.g., "sep5")
+# This is used for the destination directory for dual-sign.sh
+KMOD_NAME_FOR_DIR="${KMOD_BASE_NAME}"
+echo "Info: Using kmod name as '${KMOD_NAME_FOR_DIR}' for destination directory."
 
 # Copy the kmod RPM to the location expected by dual-sign.sh
 DEST_KMOD_PARENT_DIR="/var/cache/akmods"
