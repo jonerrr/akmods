@@ -32,13 +32,8 @@ gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.
 EOF
 
 export PATH="/usr/sbin:/sbin:/usr/bin:/bin:${PATH}"
-echo "Current PATH before DNF: ${PATH}" # Add this line
+echo "Current PATH before DNF: ${PATH}"
 
-# dnf install -y \
-#     intel-oneapi-vtune \
-#     rpm-build \
-#     make \
-#     gcc
 dnf install -y \
     coreutils \
     grep \
@@ -52,21 +47,8 @@ dnf install -y \
     make \
     gcc
 
-# Determine the actual VTune installation directory for sepdk/src
-# if [ ! -d "${SEPDK_SRC_DIR}" ]; then
-#     echo "Info: VTune sepdk source directory not found at default ${SEPDK_SRC_DIR}, attempting to find latest versioned directory."
-#     # Find the latest versioned directory, e.g., /opt/intel/oneapi/vtune/202X.Y.Z
-#     VTUNE_VERSIONED_DIR=$(find "${VTUNE_INSTALL_ROOT}/vtune/" -maxdepth 1 -type d -name '2*' | sort -V | tail -n 1)
-#     if [ -n "${VTUNE_VERSIONED_DIR}" ] && [ -d "${VTUNE_VERSIONED_DIR}/sepdk/src" ]; then
-#         SEPDK_SRC_DIR="${VTUNE_VERSIONED_DIR}/sepdk/src"
-#         echo "Info: Found sepdk source directory at ${SEPDK_SRC_DIR}"
-#     else
-#         echo "Error: Could not find VTune sepdk source directory. Searched default and versioned paths."
-#         echo "Listing contents of ${VTUNE_INSTALL_ROOT}/vtune/:"
-#         ls -la "${VTUNE_INSTALL_ROOT}/vtune/" || echo " (failed to list)"
-#         exit 1
-#     fi
-# fi
+echo "sepdk src dir ls: $(ls /opt/intel/oneapi/vtune/latest/sepdk/src/)"
+# ls /opt/intel/oneapi/vtune/latest/sepdk/src/
 cd "${SEPDK_SRC_DIR}"
 
 # Build the driver modules
@@ -90,9 +72,24 @@ if [ ! -f "sepdk.spec" ]; then
     exit 1
 fi
 
-echo "Debug: Contents of sepdk.spec:"
+# Modify sepdk.spec to work with pre-built .ko files instead of a source tarball
+# 1. Comment out Source0 line
+# 2. Comment out %setup -q line in %prep
+# 3. Ensure %prep section still exists even if empty, or rpmbuild might complain.
+#    Alternatively, remove %prep entirely if it becomes empty.
+#    Let's try making %prep effectively a no-op.
+echo "Modifying sepdk.spec to handle pre-built .ko files..."
+cp sepdk.spec sepdk.spec.orig # Backup original
+sed -i 's|^Source0:.*|# Source0: (Commented out by build-kmod-vtune.sh)|' sepdk.spec
+# If %prep only contains %setup, we can comment out %setup and leave %prep.
+# If %prep has other commands, only comment %setup.
+# Assuming %prep only has %setup based on typical usage:
+sed -i '/%prep/a # %setup -q (Commented out by build-kmod-vtune.sh)' sepdk.spec        # Add comment after %prep
+sed -i 's|^%setup -q.*|# %setup -q (Commented out by build-kmod-vtune.sh)|' sepdk.spec # Comment the line itself
+
+echo "Debug: Contents of modified sepdk.spec:"
 cat sepdk.spec
-echo "--- End of sepdk.spec ---"
+echo "--- End of modified sepdk.spec ---"
 
 cp sepdk.spec "${RPMBUILD_TOPDIR}/SPECS/"
 
